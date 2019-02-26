@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CaveAlarm</string>
+
+    <string name="add_alarm">添加闹钟</string>
+</resources>

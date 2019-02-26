@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000</color>
+    <color name="colorPrimaryDark">#8000</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!--常用颜色-->
+    <color name="color_255_white">#ffffff</color>
+    <color name="color_90_white">#efff</color>
+    <color name="color_50_white">#8fff</color><!--纯白-->
+    <color name="color_30_white">#4fff</color><!--纯白-->
+    <color name="color_15_white">#2fff</color><!--纯白-->
+
+    <color name="color_255_black">#000</color>
+    <color name="color_90_black">#e000</color>
+    <color name="color_50_black">#8000</color>
+    <color name="color_30_black">#4000</color>
+    <color name="color_15_black">#2000</color>
+
+    <color name="colorTitleBar">#000</color>
+    <color name="colorActivityBackground">#e000</color>
+</resources>
