@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity {
                 .setLeftGone()
                 .setTitleText(getResources().getString(R.string.app_name));
         List<String> stringList = new ArrayList<>();
-        for (int i=0; i<10; i++){
+        for (int i=0; i<3; i++){
             stringList.add("00:0" + i);
         }
         AlarmInfoAdapter alarmInfoAdapter = new AlarmInfoAdapter(stringList, this, R.layout.list_item_alarm_info);

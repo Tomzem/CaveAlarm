@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorActivityBackground"
+    android:background="@color/color_255_black"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -20,6 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="@dimen/dp_10"
+        android:dividerHeight="@dimen/dp_10"
         tools:listitem="@layout/list_item_alarm_info"/>
 
     <Button

@@ -3,8 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_alarm_info_height"
-    android:padding="@dimen/dp_5"
-    android:background="@color/colorTitleBar">
+    android:padding="@dimen/dp_8"
+    android:background="@color/colorItemBackground">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,7 +22,7 @@
             android:layout_marginRight="@dimen/dp_7"
             android:text="@string/test_string"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/sp_24"/>
+            android:textSize="@dimen/sp_48"/>
 
         <View
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:layout_marginRight="@dimen/dp_7"
             android:text="@string/test_string"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/sp_12"/>
+            android:textSize="@dimen/sp_16"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -49,11 +49,10 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <Button
+        <com.search.baselibrary.widget.CheckImage
             android:id="@+id/btn_is_on"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/test_string"/>
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 

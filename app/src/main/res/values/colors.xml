@@ -18,5 +18,5 @@
     <color name="color_15_black">#2000</color>
 
     <color name="colorTitleBar">#000</color>
-    <color name="colorActivityBackground">#e000</color>
+    <color name="colorItemBackground">#090909</color>
 </resources>
