@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_255_black"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <com.search.baselibrary.widget.TitleBar
         android:id="@+id/tb_first_page"

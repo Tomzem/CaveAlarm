@@ -1,10 +1,13 @@
-package com.tomzem.cavealarm;
+package com.tomzem.cavealarm.ui;
 
-import android.support.annotation.BinderThread;
 import android.widget.ListView;
 
 import com.search.baselibrary.base.BaseActivity;
 import com.search.baselibrary.widget.TitleBar;
+import com.tomzem.cavealarm.R;
+import com.tomzem.cavealarm.application.AlarmInfoAdapter;
+import com.tomzem.cavealarm.bean.User;
+import com.tomzem.cavealarm.helper.UserDaoHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +39,9 @@ public class MainActivity extends BaseActivity {
         }
         AlarmInfoAdapter alarmInfoAdapter = new AlarmInfoAdapter(stringList, this, R.layout.list_item_alarm_info);
         mLvAlarmList.setAdapter(alarmInfoAdapter);
+
+        User user = new User();
+        user.setName("hello");
+        UserDaoHelper.getInstance().insertUser(user);
     }
 }

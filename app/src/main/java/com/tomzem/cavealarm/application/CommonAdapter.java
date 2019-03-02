@@ -1,4 +1,4 @@
-package com.tomzem.cavealarm;
+package com.tomzem.cavealarm.application;
 
 import android.content.Context;
 import android.view.View;
