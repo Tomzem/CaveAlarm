@@ -154,4 +154,5 @@
     <dimen name="sp_28">28sp</dimen>
     <dimen name="sp_36">36sp</dimen>
     <dimen name="sp_48">48sp</dimen>
+    <dimen name="sp_68">68sp</dimen>
 </resources>

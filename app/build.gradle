@@ -38,4 +38,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     // greendao
     implementation 'org.greenrobot:greendao:3.2.2'
+    // 时间选择器
+    implementation 'com.contrarywind:Android-PickerView:3.2.5'
 }

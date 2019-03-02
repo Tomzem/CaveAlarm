@@ -2,4 +2,7 @@
     <string name="app_name">CaveAlarm</string>
 
     <string name="add_alarm">添加闹钟</string>
+    <string name="create_alarm">创建闹钟</string>
+    <string name="create_success">创建成功</string>
+    <string name="create_fail">创建失败</string>
 </resources>

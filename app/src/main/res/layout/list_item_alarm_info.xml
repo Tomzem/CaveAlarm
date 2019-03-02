@@ -47,12 +47,13 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center">
 
         <com.search.baselibrary.widget.CheckImage
             android:id="@+id/btn_is_on"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46" />
 
     </RelativeLayout>
 
