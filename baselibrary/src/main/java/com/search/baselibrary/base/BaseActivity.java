@@ -66,8 +66,14 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected abstract int getLayoutId();
 
+    /**
+     * 准备销毁
+     */
+    protected void readyDestroy(){}
+
     @Override
     protected void onDestroy() {
+        readyDestroy();
         super.onDestroy();
         if (unbinder != null) {
             unbinder.unbind();

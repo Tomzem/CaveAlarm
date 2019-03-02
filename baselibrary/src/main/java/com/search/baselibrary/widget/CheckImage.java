@@ -15,7 +15,7 @@ import com.search.baselibrary.R;
 public class CheckImage extends android.support.v7.widget.AppCompatImageView {
 
     private boolean CurrentState = false;
-    private int[] StateImage = {R.drawable.ic_back, R.drawable.ic_search};
+    private int[] StateImage = {R.drawable.ic_alarm_ring, R.drawable.ic_alarm_not_ring};
     private boolean isLoadView = true;
 
     private OnChangedListener onChangedListener;
