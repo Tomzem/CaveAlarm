@@ -33,4 +33,18 @@ public class AppConstants {
             DB_DIR,
             LOG_DIR
     };
+//    -1关闭 0开启 1响铃 2延迟响铃
+    public static final int ALARM_CLOSE = -1;
+    public static final int ALARM_OPEN = 0;
+    public static final int ALARM_RINGING = 1;
+    public static final int ALARM_RING_DELAY = 2;
+
+    // 自定义在第5项
+    public static final int MENU_ALARM_ONCE = 0;
+    public static final int MENU_ALARM_EVERYDAY = 1;
+    public static final int MENU_ALARM_WORK_DAY = 2;
+    public static final int MENU_ALARM_HOLIDAY = 3;
+    public static final int MENU_ALARM_WEEK = 4;
+    public static final int MENU_ALARM_SELF = 5;
+    public static final int MENU_ALARM_CEASE = 6;
 }

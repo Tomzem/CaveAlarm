@@ -7,5 +7,5 @@ package com.tomzem.cavealarm.utils;
  */
 public class ConfigManager {
 
-    public static boolean is24HourPiker = true; //时间选择是否适用24小时
+    public static boolean ringOverOnceDelete = true; //响铃一次后删除
 }
