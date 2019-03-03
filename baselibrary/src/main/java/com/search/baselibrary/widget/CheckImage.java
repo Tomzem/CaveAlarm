@@ -12,7 +12,7 @@ import com.search.baselibrary.R;
  * date:2019/2/27 10:24
  * description: 自定义开关按钮
  */
-public class CheckImage extends android.support.v7.widget.AppCompatImageView {
+public class CheckImage extends android.support.v7.widget.AppCompatImageView  implements View.OnClickListener{
 
     private boolean CurrentState = false;
     private int[] StateImage = {R.drawable.ic_alarm_ring, R.drawable.ic_alarm_not_ring};
@@ -36,6 +36,11 @@ public class CheckImage extends android.support.v7.widget.AppCompatImageView {
     protected void onFinishInflate() {
         super.onFinishInflate();
         setChecked(CurrentState);
+        this.setOnClickListener(this);
+    }
+
+    public void setCurrentState(boolean checked) {
+        CurrentState = checked;
     }
 
     /**
@@ -54,6 +59,11 @@ public class CheckImage extends android.support.v7.widget.AppCompatImageView {
         } else {
             isLoadView = false;
         }
+    }
+
+    public void setCheckedNoReturn(boolean checked) {
+        isLoadView = true;
+        setChecked(checked);
     }
 
     public void setChecked() {
@@ -101,6 +111,11 @@ public class CheckImage extends android.support.v7.widget.AppCompatImageView {
 
     public void addChangedListener(OnChangedListener onChangedListener) {
         this.onChangedListener = onChangedListener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        setChecked(!CurrentState);
     }
 
     public interface OnChangedListener {

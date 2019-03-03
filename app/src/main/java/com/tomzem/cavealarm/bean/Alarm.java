@@ -19,11 +19,11 @@ public class Alarm {
     private Long updateTime; //更新时间
 
     private String alarmNote; //备注
-    private String ringHour; //响铃小时数
-    private String ringMin; //响铃分钟数
+    private String ringHour; //响铃小时点
+    private String ringMin; //响铃分钟点
 
     private int ringCycle; //响铃周期
-    private int currentState; //当前状态 -1关闭 0开启 1响铃 2延迟响铃
+    private int currentState = 0; //当前状态 -1关闭 0开启 1响铃 2延迟响铃
 
     private boolean isDelete = false; //是否删除
 
@@ -87,6 +87,22 @@ public class Alarm {
         this.alarmNote = alarmNote;
     }
 
+    public String getRingHour() {
+        return this.ringHour;
+    }
+
+    public void setRingHour(String ringHour) {
+        this.ringHour = ringHour;
+    }
+
+    public String getRingMin() {
+        return this.ringMin;
+    }
+
+    public void setRingMin(String ringMin) {
+        this.ringMin = ringMin;
+    }
+
     public int getRingCycle() {
         return this.ringCycle;
     }
@@ -110,21 +126,4 @@ public class Alarm {
     public void setIsDelete(boolean isDelete) {
         this.isDelete = isDelete;
     }
-
-    public String getRingHour() {
-        return this.ringHour;
-    }
-
-    public void setRingHour(String ringHour) {
-        this.ringHour = ringHour;
-    }
-
-    public String getRingMin() {
-        return this.ringMin;
-    }
-
-    public void setRingMin(String ringMin) {
-        this.ringMin = ringMin;
-    }
-
 }

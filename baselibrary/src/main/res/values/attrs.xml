@@ -13,4 +13,11 @@
         <attr name="civ_fill_color" format="color" />
         <attr name="civ_circle_background_color" format="color" />
     </declare-styleable>
+    <!--设置菜单-->
+    <declare-styleable name="RingConfigItem">
+        <attr name="rightType" format="integer">0</attr>
+        <attr name="rightText" format="string"> </attr>
+        <attr name="rightHint" format="string"> </attr>
+        <attr name="rightResult" format="reference">0</attr>
+    </declare-styleable>
 </resources>

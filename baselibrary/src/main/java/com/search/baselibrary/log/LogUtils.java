@@ -69,9 +69,6 @@ public final class LogUtils {
     private static boolean sLogBorderSwitch = true; // log边框开关
     private static int sLogFilter = V;    // log过滤器
 
-    private static final String TOP_BORDER = "╔═══════════════════════════════════════════════════════════════════════════════════════════════════";
-    private static final String LEFT_BORDER = "║ ";
-    private static final String BOTTOM_BORDER = "╚═══════════════════════════════════════════════════════════════════════════════════════════════════";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     private static final int MAX_LEN = 4000;
@@ -277,7 +274,7 @@ public final class LogUtils {
             StringBuilder sb = new StringBuilder();
             String[] lines = msg.split(LINE_SEPARATOR);
             for (String line : lines) {
-                sb.append(LEFT_BORDER).append(line).append(LINE_SEPARATOR);
+                sb.append(line).append(LINE_SEPARATOR);
             }
             msg = sb.toString();
         }
@@ -313,7 +310,6 @@ public final class LogUtils {
     }
 
     private static void printLog(int type, String tag, String msg) {
-        if (sLogBorderSwitch) printBorder(type, tag, true);
         int len = msg.length();
         int countOfSub = len / MAX_LEN;
         if (countOfSub > 0) {
@@ -328,11 +324,10 @@ public final class LogUtils {
         } else {
             printSubLog(type, tag, msg);
         }
-        if (sLogBorderSwitch) printBorder(type, tag, false);
     }
 
     private static void printSubLog(final int type, final String tag, String msg) {
-        if (sLogBorderSwitch) msg = LEFT_BORDER + msg;
+        if (sLogBorderSwitch) msg = msg;
         switch (type) {
             case V:
                 Log.v(tag, msg);
@@ -355,30 +350,6 @@ public final class LogUtils {
         }
     }
 
-    private static void printBorder(int type, String tag, boolean isTop) {
-        String border = isTop ? TOP_BORDER : BOTTOM_BORDER;
-        switch (type) {
-            case V:
-                Log.v(tag, border);
-                break;
-            case D:
-                Log.d(tag, border);
-                break;
-            case I:
-                Log.i(tag, border);
-                break;
-            case W:
-                Log.w(tag, border);
-                break;
-            case E:
-                Log.e(tag, border);
-                break;
-            case A:
-                Log.wtf(tag, border);
-                break;
-        }
-    }
-
     private synchronized static void print2File(final String tag, final String msg) {
         Date now = new Date();
         String date = new SimpleDateFormat("MM-dd", Locale.getDefault()).format(now);
@@ -389,13 +360,11 @@ public final class LogUtils {
         }
         String time = new SimpleDateFormat("MM-dd HH:mm:ss.SSS ", Locale.getDefault()).format(now);
         StringBuilder sb = new StringBuilder();
-        if (sLogBorderSwitch) sb.append(TOP_BORDER);
         sb.append(time)
                 .append(tag)
                 .append(": ")
                 .append(msg)
                 .append(LINE_SEPARATOR);
-        if (sLogBorderSwitch) sb.append(BOTTOM_BORDER);
         final String dateLogContent = sb.toString();
         new Thread(new Runnable() {
             @Override

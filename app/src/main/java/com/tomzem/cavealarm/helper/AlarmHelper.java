@@ -28,6 +28,13 @@ public class AlarmHelper extends DaoManager{
         return AlarmHelper.getInstance().getDaoSession().insert(alarm);
     }
 
+    public long updateAlarm(Alarm alarm) {
+        if (alarm == null) {
+            return -1;
+        }
+        return AlarmHelper.getInstance().getDaoSession().insertOrReplace(alarm);
+    }
+
     /**
      * 根据Id查找闹钟
      * @param alarmId
