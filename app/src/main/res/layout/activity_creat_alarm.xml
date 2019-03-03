@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_255_black"
-    android:orientation="vertical">
+    android:background="@color/color_255_black">
 
     <com.search.baselibrary.widget.TitleBar
         android:id="@+id/tb_first_page"
@@ -19,16 +18,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="@dimen/dp_60"
-        android:text="@string/app_name"
+        android:layout_marginTop="@dimen/dp_120"
+        android:text="@string/text_ring_time"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/sp_68"/>
+
+    <TextView
+        android:id="@+id/tv_next_ring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_select_time"
+        android:layout_marginTop="@dimen/dp_15"
+        android:gravity="center"
+        android:text="@string/text_next_ring_show"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/colorWhite"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/tv_next_ring"
+        android:layout_marginTop="@dimen/dp_10"
+        android:showDividers="middle"
+        android:divider="@drawable/divider_linear_layout">
+
+        <com.search.baselibrary.widget.RingConfigItem
+            android:id="@+id/rci_ring_cycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rightType="1"
+            app:rightText="@string/ring_cycle"
+            app:rightResult="@array/ring_cycle"
+            />
+
+        <com.search.baselibrary.widget.RingConfigItem
+            android:id="@+id/rci_ring_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rightType="2"
+            app:rightText="@string/ring_note"
+            app:rightHint="@string/ring_note_hint"
+            />
+
+    </LinearLayout>
 
 
     <Button
         android:id="@+id/btn_create_alarm"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_button_height"
+        android:layout_alignParentBottom="true"
         android:text="@string/create_alarm"/>
 
-</LinearLayout>
+</RelativeLayout>
