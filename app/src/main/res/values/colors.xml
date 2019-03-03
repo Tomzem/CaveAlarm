@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#000</color>
     <color name="colorPrimaryDark">#8000</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#3F51B5</color>
 
     <!--常用颜色-->
     <color name="color_255_white">#ffffff</color>

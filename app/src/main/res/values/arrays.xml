@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="ring_cycle">
+        <item>0:一次       :1:-1</item>
+        <item>1:每天       :0:-1</item>
+        <item>2:法定工作日  :0:-1</item>
+        <item>3:法定节假日  :0:-1</item>
+        <item>4:周一至周五  :0:-1</item>
+        <item>5:自定义     :0:-1</item>
+        <item>6:单双休     :0:-1</item>
+    </string-array>
+
+    <string-array name="ring_cycle_self">
+        <item>111:周一:0:5</item>
+        <item>222:周二:0:5</item>
+        <item>333:周三:0:5</item>
+        <item>444:周四:0:5</item>
+        <item>555:周五:0:5</item>
+        <item>666:周六:0:5</item>
+        <item>777:周日:0:5</item>
+    </string-array>
+
+    <string-array name="ring_cycle_cease">
+        <item>7:工作日+本周六:0:6</item>
+        <item>8:工作日+下周六:0:6</item>
+        <item>9:工作日+本周日:0:6</item>
+        <item>10:工作日+下周日:0:6</item>
+    </string-array>
+
+
+</resources>
