@@ -2,7 +2,8 @@ package com.tomzem.cavealarm.utils;
 
 import android.annotation.SuppressLint;
 
-import com.search.baselibrary.utils.DateUtil;
+import com.search.baselibrary.utils.UiUtils;
+import com.tomzem.cavealarm.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,9 @@ public class TimeUtils {
     public static final String FORMAT_HM = "HH:mm";
     public static final String FORMAT_HH = "HH";
     public static final String FORMAT_MM = "mm";
+    public static final String FORMAT_EE = "EEEE";
 
+    public static final String[] WEEK = UiUtils.getResources().getStringArray(R.array.week_array);
     /**
      * 获取时间戳
      * @return 获取时间戳
@@ -92,12 +95,19 @@ public class TimeUtils {
     }
 
     /**
-     * 将时间转换为时间戳
+     * 将时间转换为时间戳  1551800031 - 1551713631 = 86400
      */
-    public static long dateToStamp(String s) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_YMD_HM);
-        Date date = simpleDateFormat.parse(s);
-        return date.getTime();
+    public static long dateToStamp(String s) {
+        long stamp = getCurrentTime();
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_YMD_HM);
+            Date date = simpleDateFormat.parse(s);
+            stamp = date.getTime();
+        } catch (ParseException e) {
+            stamp += 86400;
+            e.printStackTrace();
+        }
+        return stamp;
     }
 
     /**
@@ -157,5 +167,50 @@ public class TimeUtils {
         } else {
             return min + "分钟";
         }
+    }
+
+    /**
+     *  判断今日是否是周一到周日
+     * @return
+     */
+    public static boolean isMonToThurs() {
+        String today = getTodayInWeek();
+        for (int i=0; i<WEEK.length; i++) {
+            if (today.equals(WEEK[i])) {
+                return i < 4;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *  获取今天是周几
+     * @return
+     */
+    public static String getTodayInWeek() {
+        Date date=new Date();
+        SimpleDateFormat dateFm = new SimpleDateFormat(FORMAT_EE);
+        return dateFm.format(date);
+    }
+
+    /**
+     * 获取下周一日期
+     * @param date
+     * @return
+     */
+    public static String getNextMonday(Date date) {
+        //获得入参的日期
+        Calendar cd = Calendar.getInstance();
+        cd.setTime(date);
+
+        // 获得入参日期是一周的第几天
+        int dayOfWeek = cd.get(Calendar.DAY_OF_WEEK);
+        // 获得入参日期相对于下周一的偏移量（在国外，星期一是一周的第二天，所以下周一是这周的第九天）
+        // 若入参日期是周日，它的下周一偏移量是1
+        int nextMondayOffset = dayOfWeek == 1 ? 1 : 9 - dayOfWeek;
+
+        // 增加到入参日期的下周一
+        cd.add(Calendar.DAY_OF_MONTH, nextMondayOffset);
+        return parse(cd.getTime(), FORMAT_YMD);
     }
 }

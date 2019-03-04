@@ -1,6 +1,5 @@
 package com.tomzem.cavealarm.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.search.baselibrary.base.BaseActivity;
 import com.search.baselibrary.bean.MenuResult;
-import com.search.baselibrary.log.LogUtils;
 import com.search.baselibrary.utils.DialogUtils;
 import com.search.baselibrary.utils.ParseUtils;
 import com.search.baselibrary.utils.ToastUtils;
@@ -21,12 +19,10 @@ import com.tomzem.cavealarm.R;
 import com.tomzem.cavealarm.bean.Alarm;
 import com.tomzem.cavealarm.eventbus.RefreshAlarmListEvent;
 import com.tomzem.cavealarm.helper.AlarmHelper;
-import com.tomzem.cavealarm.utils.AppConstants;
 import com.tomzem.cavealarm.utils.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +59,8 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     private MenuResult mCurrentMenuResult;
     private List<MenuResult> mMenuResult;
     private List<MenuResult> mMenuResultSelf;
+    private int[] currentHourMin;
+    private int[] selectHourMin;
 
     @Override
     protected int getLayoutId() {
@@ -247,9 +245,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
      * 计算多久后响铃时间
      */
     private void calculateNextRing() {
-        int[] currentHourMin = TimeUtils.getHourMinByDate(new Date());
+
+        currentHourMin = TimeUtils.getHourMinByDate(new Date());
         String[] selectHourMinStr = mTpSelectTime.getText().toString().split(":");
-        int[] selectHourMin = new int[selectHourMinStr.length];
+        selectHourMin = new int[selectHourMinStr.length];
         for (int i=0; i<selectHourMin.length; i++) {
             selectHourMin[i] = Integer.parseInt(selectHourMinStr[i]);
         }
@@ -258,11 +257,30 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
             switch (mRciRingCycle.getMenuResult().getId()) {
                 case MENU_ALARM_ONCE:
                 case MENU_ALARM_EVERYDAY:
-                    calculateRingTime(selectHourMin, currentHourMin);
+                    ringInTodayOrNextDay();
                     break;
                 case MENU_ALARM_WORK_DAY:break;
                 case MENU_ALARM_HOLIDAY:break;
-                case MENU_ALARM_WEEK:break;
+                case MENU_ALARM_WEEK:
+                    // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
+                    if (TimeUtils.isMonToThurs()) {
+                        ringInTodayOrNextDay();
+                    } else if (getResources().getString(R.string.text_Friday).equals(TimeUtils.getTodayInWeek())) {
+                        // 周五 判断当天是否响铃
+                        if (isRingInToday() > 0) {
+                            //响
+                            ringInTodayOrNextDay();
+                        } else {
+                            //不响  下周一响
+                            setRingPoorText(getAssignDayRingTime(TimeUtils.getNextMonday(new Date())));
+                        }
+                    } else if (getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {
+                        // 周日 让他在第二天 选择的时间响
+                        setRingPoorText(getAssignDayRingTime(TimeUtils.getNextDay()));
+                    } else {
+                        setRingPoorText(getAssignDayRingTime(TimeUtils.getNextMonday(new Date())));
+                    }
+                    break;
                 case MENU_ALARM_SELF:break;
                 case MENU_ALARM_CEASE:break;
             }
@@ -270,29 +288,49 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    // 按照周期 第二天必响铃 计算方式
-    private void calculateRingTime(int[] selectHourMin, int[] currentHourMin) {
+    /**
+     * 按照周期 当天或第二天必响铃 计算方式
+     */
+    private void ringInTodayOrNextDay() {
         long currentTime = TimeUtils.getCurrentTime();
-        long ringTime = currentTime;
-        try{
-            int poor = selectHourMin[0]*60 - currentHourMin[0]*60
-                    + selectHourMin[1] -currentHourMin[1];
-            if (poor <= 0) {
-                //选择的时间已经过了 第二天的这个时候的时间戳
-                StringBuffer time = new StringBuffer();
-                time.append(TimeUtils.getNextDay()).append(" " + mTpSelectTime.getText().toString());
-                ringTime = TimeUtils.dateToStamp(time.toString());
-            } else {
-                ringTime = currentTime + poor * 1000 * 60;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } finally {
-            LogUtils.i(TimeUtils.getDatePoor(ringTime, currentTime));
-            StringBuffer text = new StringBuffer();
-            text.append(TimeUtils.getDatePoor(ringTime, currentTime))
-                    .append(getResources().getString(R.string.text_next_ring));
-            mTvNextRing.setText(text.toString());
+        long ringTime;
+        int poor = isRingInToday();
+        if (poor <= 0) {
+            //选择的时间已经过了 获取第二天的这个时候的时间戳
+            ringTime = getAssignDayRingTime(TimeUtils.getNextDay());
+        } else {
+            ringTime = currentTime + poor * 1000 * 60;
         }
+        setRingPoorText(ringTime);
+    }
+
+    /**
+     *  判断当天是否需要响铃
+     * @return 大于0 响  小于等于 不会响
+     */
+    private int isRingInToday() {
+        return selectHourMin[0]*60 - currentHourMin[0]*60
+                + selectHourMin[1] -currentHourMin[1];
+    }
+
+    /**
+     *  获取在指定日期响铃时间的时间戳
+     * @return
+     */
+    private long getAssignDayRingTime(String assignDay) {
+        StringBuffer time = new StringBuffer();
+        time.append(assignDay).append(" " + mTpSelectTime.getText().toString());
+        return TimeUtils.dateToStamp(time.toString());
+    }
+
+    /**
+     *  设置响铃时间差
+     * @param ringTime
+     */
+    private void setRingPoorText(long ringTime) {
+        StringBuffer text = new StringBuffer();
+        text.append(TimeUtils.getDatePoor(ringTime, TimeUtils.getCurrentTime()))
+                .append(getResources().getString(R.string.text_next_ring));
+        mTvNextRing.setText(text.toString());
     }
 }

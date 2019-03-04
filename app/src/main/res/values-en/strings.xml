@@ -14,4 +14,21 @@
     <string name="ring_note_hint">输入备注</string>
     <string name="create_ring_dialog_title">确定创建闹钟？</string>
 
+    <string-array name="week_array">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string name="text_Monday">Monday</string>
+    <string name="text_Tuesday">Tuesday</string>
+    <string name="text_Wednesday">Wednesday</string>
+    <string name="text_Thursday">Thursday</string>
+    <string name="text_Friday">Friday</string>
+    <string name="text_Saturday">Saturday</string>
+    <string name="text_Sunday">Sunday</string>
+
 </resources>
