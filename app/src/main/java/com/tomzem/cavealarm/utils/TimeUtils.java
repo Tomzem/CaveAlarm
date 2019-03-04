@@ -160,13 +160,21 @@ public class TimeUtils {
         long day = diff / nd;
         long hour = diff % nd / nh;
         long min = diff % nd % nh / nm;
+
+        StringBuffer datePoor = new StringBuffer();
         if (day != 0) {
-            return day + "天" + hour + "小时" + min + "分钟";
-        } else if (hour != 0){
-            return hour + "小时" + min + "分钟";
-        } else {
-            return min + "分钟";
+            datePoor.append(day).append("天");
         }
+        if (hour != 0) {
+            datePoor.append(hour).append("小时");
+        }
+        if (min != 0) {
+            datePoor.append(min).append("分钟");
+        }
+        if (datePoor.length() == 0) {
+            datePoor.append("0分钟");
+        }
+        return datePoor.toString();
     }
 
     /**
