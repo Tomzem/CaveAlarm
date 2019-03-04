@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">CaveAlarm</string>
+
+    <string name="add_alarm">添加闹钟</string>
+    <string name="create_alarm">创建闹钟</string>
+    <string name="create_success">创建成功</string>
+    <string name="create_fail">创建失败</string>
+    <string name="text_ring_time">00:00</string>
+    <string name="text_next_ring">后响铃</string>
+    <string name="text_next_ring_show">23小时59分钟后响铃</string>
+    
+    <string name="ring_cycle">重复周期</string>
+    <string name="ring_note">响铃备注</string>
+    <string name="ring_note_hint">输入备注</string>
+    <string name="create_ring_dialog_title">确定创建闹钟？</string>
+
+    <string-array name="week_array">
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期天</item>
+    </string-array>
+    <string name="text_Monday">星期一</string>
+    <string name="text_Tuesday">星期二</string>
+    <string name="text_Wednesday">星期三</string>
+    <string name="text_Thursday">星期四</string>
+    <string name="text_Friday">星期五</string>
+    <string name="text_Saturday">星期六</string>
+    <string name="text_Sunday">星期天</string>
+
+</resources>
