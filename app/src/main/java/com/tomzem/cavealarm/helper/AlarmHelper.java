@@ -14,10 +14,11 @@ import java.util.List;
  * @time 2019年03月02日 19:42
  * @desc
  */
-public class AlarmHelper extends DaoManager{
+public class AlarmHelper extends DaoManager {
 
     /**
-     *  添加闹钟
+     * 添加闹钟
+     *
      * @param alarm
      * @return
      */
@@ -37,6 +38,7 @@ public class AlarmHelper extends DaoManager{
 
     /**
      * 根据Id查找闹钟
+     *
      * @param alarmId
      * @return
      */
@@ -51,7 +53,7 @@ public class AlarmHelper extends DaoManager{
     }
 
     public List<Alarm> getAllAlarm() {
-        List<Alarm> alarms= new ArrayList<>();
+        List<Alarm> alarms = new ArrayList<>();
         QueryBuilder query = getDaoSession().getAlarmDao().queryBuilder()
                 .where(AlarmDao.Properties.IsDelete.eq(0));
         if (query != null) {

@@ -96,13 +96,13 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void chooseAlarmCycle(int resID) {
-        final String[] ringCycles=getResources().getStringArray(resID);
+        final String[] ringCycles = getResources().getStringArray(resID);
         mMenuResult = new ArrayList<>();
         mMenuResult.addAll(ParseUtils.parseMenuResult(ringCycles));
-        AlertDialog.Builder singleDialog=new AlertDialog.Builder(mContext);
+        AlertDialog.Builder singleDialog = new AlertDialog.Builder(mContext);
         singleDialog.setItems(ParseUtils.parseMenuResults(ringCycles), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog,int which){
+            public void onClick(DialogInterface dialog, int which) {
                 MenuResult newResult = mMenuResult.get(which);
                 if (mCurrentMenuResult.getId() == MENU_ALARM_SELF || mCurrentMenuResult.getId() != newResult.getId()) {
                     if (newResult.getId() == 6) {
@@ -129,15 +129,15 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     *  选择自定义日期
+     * 选择自定义日期
      */
     private void chooseAlarmCycleSelf() {
-        final String[] ringCycles=getResources().getStringArray(R.array.ring_cycle_self);
+        final String[] ringCycles = getResources().getStringArray(R.array.ring_cycle_self);
         mMenuResultSelf = new ArrayList<>();
         mMenuResultSelf.addAll(ParseUtils.parseMenuResult(ringCycles));
-        final boolean mChoseSts[]={false,false,false,false,false,false,false};
-        AlertDialog.Builder multiDialog=new AlertDialog.Builder(mContext);
-        multiDialog.setMultiChoiceItems(ParseUtils.parseMenuResults(ringCycles),mChoseSts,new DialogInterface.OnMultiChoiceClickListener(){
+        final boolean mChoseSts[] = {false, false, false, false, false, false, false};
+        AlertDialog.Builder multiDialog = new AlertDialog.Builder(mContext);
+        multiDialog.setMultiChoiceItems(ParseUtils.parseMenuResults(ringCycles), mChoseSts, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked) {
@@ -150,14 +150,14 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
         multiDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (mMenuResult != null && mMenuResult.size() > MENU_ALARM_SELF){
+                if (mMenuResult != null && mMenuResult.size() > MENU_ALARM_SELF) {
                     mMenuResult.get(MENU_ALARM_SELF).setMenuResultSelf(mMenuResultSelf);
                 }
                 mRciRingCycle.setMenuResult(mMenuResult);
                 dialog.dismiss();
             }
         });
-        multiDialog.setNegativeButton("取消", new DialogInterface.OnClickListener(){
+        multiDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -166,7 +166,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
             }
         });
         multiDialog.create().show();
-            
+
 
     }
 
@@ -249,7 +249,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
         currentHourMin = TimeUtils.getHourMinByDate(new Date());
         String[] selectHourMinStr = mTpSelectTime.getText().toString().split(":");
         selectHourMin = new int[selectHourMinStr.length];
-        for (int i=0; i<selectHourMin.length; i++) {
+        for (int i = 0; i < selectHourMin.length; i++) {
             selectHourMin[i] = Integer.parseInt(selectHourMinStr[i]);
         }
 
@@ -259,8 +259,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                 case MENU_ALARM_EVERYDAY:
                     ringInTodayOrNextDay();
                     break;
-                case MENU_ALARM_WORK_DAY:break;
-                case MENU_ALARM_HOLIDAY:break;
+                case MENU_ALARM_WORK_DAY:
+                    break;
+                case MENU_ALARM_HOLIDAY:
+                    break;
                 case MENU_ALARM_WEEK:
                     // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
                     if (TimeUtils.isMonToThurs()) {
@@ -281,8 +283,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         setRingPoorText(getAssignDayRingTime(TimeUtils.getNextMonday(new Date())));
                     }
                     break;
-                case MENU_ALARM_SELF:break;
-                case MENU_ALARM_CEASE:break;
+                case MENU_ALARM_SELF:
+                    break;
+                case MENU_ALARM_CEASE:
+                    break;
             }
 
         }
@@ -305,16 +309,18 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     *  判断当天是否需要响铃
+     * 判断当天是否需要响铃
+     *
      * @return 大于0 响  小于等于 不会响
      */
     private int isRingInToday() {
-        return selectHourMin[0]*60 - currentHourMin[0]*60
-                + selectHourMin[1] -currentHourMin[1];
+        return selectHourMin[0] * 60 - currentHourMin[0] * 60
+                + selectHourMin[1] - currentHourMin[1];
     }
 
     /**
-     *  获取在指定日期响铃时间的时间戳
+     * 获取在指定日期响铃时间的时间戳
+     *
      * @return
      */
     private long getAssignDayRingTime(String assignDay) {
@@ -324,7 +330,8 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     *  设置响铃时间差
+     * 设置响铃时间差
+     *
      * @param ringTime
      */
     private void setRingPoorText(long ringTime) {

@@ -26,7 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     @BindView(R.id.tb_first_page)
     TitleBar mTbFirstPage;
@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 if (time1 < time2) {
                     result = -1;
                 } else {
-                    result =  1;
+                    result = 1;
                 }
                 return result;
             }

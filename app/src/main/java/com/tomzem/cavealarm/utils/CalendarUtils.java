@@ -16,7 +16,7 @@ public class CalendarUtils {
 
 
     // 法律规定的放假日期
-    private List<String> lawHolidays   = Arrays.asList("2017-12-30", "2017-12-31",
+    private List<String> lawHolidays = Arrays.asList("2017-12-30", "2017-12-31",
             "2018-01-01", "2018-02-15", "2018-02-16", "2018-02-17", "2018-02-18",
             "2018-02-19", "2018-02-20", "2018-02-21", "2018-04-05", "2018-04-06",
             "2018-04-07", "2018-04-29", "2018-04-30", "2018-05-01", "2018-06-16",
@@ -28,8 +28,8 @@ public class CalendarUtils {
             "2018-04-08", "2018-04-28", "2018-09-29", "2018-09-30");
 
     /**
-     * @author  qyw
-     * @description  判断是否是法定假日
+     * @author qyw
+     * @description 判断是否是法定假日
      * @date Created in 21:03 2019/1/31
      **/
     public boolean isLawHoliday(String calendar) throws Exception {
@@ -41,16 +41,16 @@ public class CalendarUtils {
     }
 
     /**
-     * @author  qyw
-     * @description  判断是否是周末
+     * @author qyw
+     * @description 判断是否是周末
      * @date Created in 21:03 2019/1/31
      **/
     public boolean isWeekends(String calendar) throws Exception {
         CalendarUtils.isValidDate(calendar);
         // 先将字符串类型的日期转换为Calendar类型
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = sdf.parse(calendar);
-        Calendar ca   = Calendar.getInstance();
+        Calendar ca = Calendar.getInstance();
         ca.setTime(date);
         if (ca.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
                 || ca.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
@@ -60,8 +60,8 @@ public class CalendarUtils {
     }
 
     /**
-     * @author  qyw
-     * @description  判断是否是需要额外补班的周末
+     * @author qyw
+     * @description 判断是否是需要额外补班的周末
      * @date Created in 21:06 2019/1/31
      **/
     public boolean isExtraWorkday(String calendar) throws Exception {
@@ -73,8 +73,8 @@ public class CalendarUtils {
     }
 
     /**
-     * @author  qyw
-     * @description  判断是否是休息日（包含法定节假日和不需要补班的周末）
+     * @author qyw
+     * @description 判断是否是休息日（包含法定节假日和不需要补班的周末）
      * @date Created in 21:06 2019/1/31
      **/
     public boolean isHoliday(String calendar) throws Exception {
@@ -95,8 +95,8 @@ public class CalendarUtils {
     }
 
     /**
-     * @author  qyw
-     * @description  校验字符串是否为指定的日期格式,含逻辑严格校验,2007/02/30返回false
+     * @author qyw
+     * @description 校验字符串是否为指定的日期格式, 含逻辑严格校验, 2007/02/30返回false
      * @date Created in 21:06 2019/1/31
      **/
     private static boolean isValidDate(String str) {
@@ -116,9 +116,9 @@ public class CalendarUtils {
 
 
     public static void main(String[] args) throws Exception {
-        String               calendar = "2018-01-32";
-        CalendarUtils cc       = new CalendarUtils();
-        System.out.println("输入的calendar是否是指定要求的格式:"+CalendarUtils.isValidDate(calendar));
+        String calendar = "2018-01-32";
+        CalendarUtils cc = new CalendarUtils();
+        System.out.println("输入的calendar是否是指定要求的格式:" + CalendarUtils.isValidDate(calendar));
         System.out.println("是否是法定节假日：" + cc.isLawHoliday(calendar));
         System.out.println("是否是周末：" + cc.isWeekends(calendar));
         System.out.println("是否是需要额外补班的周末：" + cc.isExtraWorkday(calendar));

@@ -29,8 +29,8 @@ public class Alarm {
 
     @Generated(hash = 1059461599)
     public Alarm(Long id, Long ringTime, Long createTime, Long updateTime,
-            String alarmNote, String ringHour, String ringMin, int ringCycle,
-            int currentState, boolean isDelete) {
+                 String alarmNote, String ringHour, String ringMin, int ringCycle,
+                 int currentState, boolean isDelete) {
         this.id = id;
         this.ringTime = ringTime;
         this.createTime = createTime;

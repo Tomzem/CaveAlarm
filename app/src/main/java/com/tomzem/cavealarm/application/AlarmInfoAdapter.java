@@ -60,7 +60,6 @@ public class AlarmInfoAdapter extends CommonAdapter<Alarm> {
         holder.setText(R.id.tv_alarm_state, state.toString());
 
 
-
         checkImage.addChangedListener(new CheckImage.OnChangedListener() {
             @Override
             public void onCheckChanged(View v, boolean state) {
@@ -69,7 +68,7 @@ public class AlarmInfoAdapter extends CommonAdapter<Alarm> {
                 if (state) {
                     alarm.setCurrentState(AppConstants.ALARM_OPEN);
                 } else {
-                    switch(alarm.getCurrentState()) {
+                    switch (alarm.getCurrentState()) {
                         case AppConstants.ALARM_CLOSE:
                             break;
                         case AppConstants.ALARM_RINGING:

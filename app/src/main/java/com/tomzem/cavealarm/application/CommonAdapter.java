@@ -69,7 +69,8 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
     }
 
     public abstract void fillData(int position, CommonViewHolder holder);
-    public  void onDataChange(List<T> datas){
+
+    public void onDataChange(List<T> datas) {
         mDatas = datas;
         notifyDataSetChanged();
     }

@@ -8,5 +8,6 @@ import com.search.baselibrary.base.MessageEventBus;
  * @desc 更新闹钟列表
  */
 public class RefreshAlarmListEvent extends MessageEventBus {
-    public RefreshAlarmListEvent(){}
+    public RefreshAlarmListEvent() {
+    }
 }

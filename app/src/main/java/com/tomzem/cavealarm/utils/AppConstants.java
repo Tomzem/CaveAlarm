@@ -33,7 +33,7 @@ public class AppConstants {
             DB_DIR,
             LOG_DIR
     };
-//    -1关闭 0开启 1响铃 2延迟响铃
+    //    -1关闭 0开启 1响铃 2延迟响铃
     public static final int ALARM_CLOSE = -1;
     public static final int ALARM_OPEN = 0;
     public static final int ALARM_RINGING = 1;

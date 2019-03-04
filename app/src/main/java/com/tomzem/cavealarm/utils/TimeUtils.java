@@ -29,8 +29,10 @@ public class TimeUtils {
     public static final String FORMAT_EE = "EEEE";
 
     public static final String[] WEEK = UiUtils.getResources().getStringArray(R.array.week_array);
+
     /**
      * 获取时间戳
+     *
      * @return 获取时间戳
      */
     public static Long getCurrentTime() {
@@ -38,7 +40,8 @@ public class TimeUtils {
     }
 
     /**
-     *  获取当前时间 00：00
+     * 获取当前时间 00：00
+     *
      * @return
      */
     public static String getCurrentHourMin() {
@@ -47,6 +50,7 @@ public class TimeUtils {
 
     /**
      * 获取时分数组
+     *
      * @param date
      * @return
      */
@@ -57,6 +61,7 @@ public class TimeUtils {
 
     /**
      * 根据date格式获取calendar格式
+     *
      * @param date
      * @return
      */
@@ -66,12 +71,13 @@ public class TimeUtils {
         }
         Calendar selectedDate = Calendar.getInstance();
         int[] select = TimeUtils.getHourMinByDate(date);
-        selectedDate.set(0,0,0, select[0], select[1]);
+        selectedDate.set(0, 0, 0, select[0], select[1]);
         return selectedDate;
     }
 
     /**
      * 格式化时间
+     *
      * @param format
      * @return
      */
@@ -80,7 +86,8 @@ public class TimeUtils {
     }
 
     /**
-     *  格式化时间
+     * 格式化时间
+     *
      * @param date
      * @param format
      * @return
@@ -113,7 +120,7 @@ public class TimeUtils {
     /**
      * 将时间戳转换为时间
      */
-    public static String stampToDate(Long s){
+    public static String stampToDate(Long s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_YMD_HMS);
         Date date = new Date(s);
@@ -123,16 +130,18 @@ public class TimeUtils {
 
     /**
      * 获取年月
+     *
      * @param date
      * @return
      */
-    public static String getYearMonth(Date date){
+    public static String getYearMonth(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_YM);
         return simpleDateFormat.format(date);
     }
 
     /**
-     *  获取明天
+     * 获取明天
+     *
      * @return
      */
     public static String getNextDay() {
@@ -145,6 +154,7 @@ public class TimeUtils {
 
     /**
      * 计算两个时间差
+     *
      * @param endDate
      * @param nowDate
      * @return
@@ -178,12 +188,13 @@ public class TimeUtils {
     }
 
     /**
-     *  判断今日是否是周一到周日
+     * 判断今日是否是周一到周日
+     *
      * @return
      */
     public static boolean isMonToThurs() {
         String today = getTodayInWeek();
-        for (int i=0; i<WEEK.length; i++) {
+        for (int i = 0; i < WEEK.length; i++) {
             if (today.equals(WEEK[i])) {
                 return i < 4;
             }
@@ -192,17 +203,19 @@ public class TimeUtils {
     }
 
     /**
-     *  获取今天是周几
+     * 获取今天是周几
+     *
      * @return
      */
     public static String getTodayInWeek() {
-        Date date=new Date();
+        Date date = new Date();
         SimpleDateFormat dateFm = new SimpleDateFormat(FORMAT_EE);
         return dateFm.format(date);
     }
 
     /**
      * 获取下周一日期
+     *
      * @param date
      * @return
      */
