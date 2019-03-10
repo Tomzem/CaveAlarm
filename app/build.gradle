@@ -50,4 +50,6 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.2.2'
     // 时间选择器
     implementation 'com.contrarywind:Android-PickerView:3.2.5'
+    // 权限申请     https://github.com/getActivity/XXPermissions
+    implementation 'com.hjq:xxpermissions:5.0'
 }

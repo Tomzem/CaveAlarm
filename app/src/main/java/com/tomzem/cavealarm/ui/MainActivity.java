@@ -8,12 +8,15 @@ import android.widget.ListView;
 import com.search.baselibrary.base.BaseActivity;
 import com.search.baselibrary.base.MessageEventBus;
 import com.search.baselibrary.utils.JumpUtil;
+import com.search.baselibrary.utils.ToastUtils;
 import com.search.baselibrary.widget.TitleBar;
 import com.tomzem.cavealarm.R;
 import com.tomzem.cavealarm.application.AlarmInfoAdapter;
 import com.tomzem.cavealarm.bean.Alarm;
 import com.tomzem.cavealarm.eventbus.RefreshAlarmListEvent;
 import com.tomzem.cavealarm.helper.AlarmHelper;
+import com.tomzem.cavealarm.utils.ConfigManager;
+import com.tomzem.cavealarm.utils.PermissionUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void initBefore() {
         super.initBefore();
+        PermissionUtils.getPermission(this);
         EventBus.getDefault().register(this);
     }
 
@@ -69,8 +73,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void initData() {
         super.initData();
-        mAlarmList = new ArrayList<>();
-        updateAlarmList();
+        if (ConfigManager.isHaveReadExternalStorage) {
+            mAlarmList = new ArrayList<>();
+            updateAlarmList();
+        } else {
+            ToastUtils.show(getResources().getString(R.string.permission_read_file_fail));
+        }
     }
 
     @Override
