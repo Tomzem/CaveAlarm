@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+configurations {
+    lintChecks
+}
+
+dependencies {
+    lintChecks project(path: ':LintLib', configuration: "lintChecks")
+}
+
+task copyLintJar(type: Copy) {
+    from(configurations.lintChecks) {
+        rename {
+            String fileName ->
+                'lint.jar'
+        }
+    }
+    into 'build/intermediates/lint/'
+}
+
+// 当项目build到compileLint这一步时执行copyLintJar方法
+project.afterEvaluate {
+    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+    //对内置的Gradle task “compileLint”做了修改，让其依赖于我们定义的一个task “copyLintJar”。
+    compileLintTask.dependsOn(copyLintJar)
+}
