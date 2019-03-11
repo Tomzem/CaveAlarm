@@ -2,13 +2,11 @@ package com.tomzem.cavealarm.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.tomzem.cavealarm.bean.Holiday;
 import com.tomzem.cavealarm.bean.JsonMonth;
 import com.tomzem.cavealarm.bean.ResultCode;
-import com.tomzem.cavealarm.ui.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,22 +38,27 @@ public class CalendarUtils {
         if (isHaveCache(context)) {
             return;
         }
+        // 如果文件中存在当年的信息，直接保存
+        String holidayByFile = getHolidayByFile(context);
+        if (!"".equals(holidayByFile)) {
+            saveHoliday(context, holidayByFile);
+        }
         StringBuffer stringBuffer = new StringBuffer();
         try {
-//            URL url = new URL(AppConstants.HOLIDAY_API + TimeUtils.parse(TimeUtils.FORMAT_YY));
-//            URLConnection URLconnection = url.openConnection();
-//            HttpURLConnection httpConnection = (HttpURLConnection) URLconnection;
-//            int responseCode = httpConnection.getResponseCode();
-//            if (responseCode == HttpURLConnection.HTTP_OK) {
-//                InputStream in = httpConnection.getInputStream();
-//                InputStreamReader isr = new InputStreamReader(in);
-//                BufferedReader bufr = new BufferedReader(isr);
-//                String str;
-//                while ((str = bufr.readLine()) != null) {
-//                    stringBuffer.append(str.toString());
-//                }
-//                bufr.close();
-//            }
+            URL url = new URL(AppConstants.HOLIDAY_API + TimeUtils.parse(TimeUtils.FORMAT_YY));
+            URLConnection URLconnection = url.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) URLconnection;
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                InputStream in = httpConnection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(in);
+                BufferedReader bufr = new BufferedReader(isr);
+                String str;
+                while ((str = bufr.readLine()) != null) {
+                    stringBuffer.append(str.toString());
+                }
+                bufr.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,8 +86,9 @@ public class CalendarUtils {
             }
         }
 
+        //如果信息与本地不同 则加载本地信息，如果本地无信息 则加载网络
         String holidayByFile = getHolidayByFile(context);
-        if (holidayByFile.equals(stringBuffer.toString())) {
+        if ("".equals(holidayByFile) || holidayByFile.equals(stringBuffer.toString())) {
             saveHoliday(context, stringBuffer.toString());
         } else {
             saveHoliday(context, holidayByFile);
