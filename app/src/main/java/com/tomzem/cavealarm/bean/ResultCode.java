@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Tomze
  * @time 2019年03月11日 23:03
- * @desc
+ * @desc 解析节假日json用
  */
 public class ResultCode {
     private int code;
