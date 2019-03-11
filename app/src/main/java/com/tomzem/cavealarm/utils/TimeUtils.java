@@ -20,8 +20,9 @@ public class TimeUtils {
 
     public static final String FORMAT_YMD_HMS = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_YMD_HM = "yyyy-MM-dd HH:mm";
-    public static final String FORMAT_YM = "yyyy-MM";
     public static final String FORMAT_YMD = "yyyy-MM-dd";
+    public static final String FORMAT_YM = "yyyy-MM";
+    public static final String FORMAT_YY = "yyyy";
 
     public static final String FORMAT_HM = "HH:mm";
     public static final String FORMAT_HH = "HH";

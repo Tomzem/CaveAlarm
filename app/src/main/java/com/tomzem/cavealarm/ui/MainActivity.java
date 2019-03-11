@@ -15,6 +15,7 @@ import com.tomzem.cavealarm.application.AlarmInfoAdapter;
 import com.tomzem.cavealarm.bean.Alarm;
 import com.tomzem.cavealarm.eventbus.RefreshAlarmListEvent;
 import com.tomzem.cavealarm.helper.AlarmHelper;
+import com.tomzem.cavealarm.utils.CalendarUtils;
 import com.tomzem.cavealarm.utils.ConfigManager;
 import com.tomzem.cavealarm.utils.PermissionUtils;
 
@@ -53,6 +54,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.initBefore();
         PermissionUtils.getPermission(this);
         EventBus.getDefault().register(this);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+            CalendarUtils.getHolidayByInternet(MainActivity.this);
+            }
+        }).start();
+
     }
 
     @Override

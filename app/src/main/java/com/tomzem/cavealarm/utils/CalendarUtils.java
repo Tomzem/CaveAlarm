@@ -1,10 +1,28 @@
 package com.tomzem.cavealarm.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.tomzem.cavealarm.bean.Holiday;
+import com.tomzem.cavealarm.bean.JsonMonth;
+import com.tomzem.cavealarm.bean.ResultCode;
+import com.tomzem.cavealarm.ui.MainActivity;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,115 +32,163 @@ import java.util.List;
  */
 public class CalendarUtils {
 
-
-    // 法律规定的放假日期
-    private List<String> lawHolidays = Arrays.asList("2017-12-30", "2017-12-31",
-            "2018-01-01", "2018-02-15", "2018-02-16", "2018-02-17", "2018-02-18",
-            "2018-02-19", "2018-02-20", "2018-02-21", "2018-04-05", "2018-04-06",
-            "2018-04-07", "2018-04-29", "2018-04-30", "2018-05-01", "2018-06-16",
-            "2018-06-17", "2018-06-18", "2018-09-22", "2018-09-23", "2018-09-24",
-            "2018-10-01", "2018-10-02", "2018-10-03", "2018-10-04", "2018-10-05",
-            "2018-10-06", "2018-10-07");
-    // 由于放假需要额外工作的周末
-    private List<String> extraWorkdays = Arrays.asList("2018-02-11", "2018-02-24",
-            "2018-04-08", "2018-04-28", "2018-09-29", "2018-09-30");
-
     /**
-     * @author qyw
-     * @description 判断是否是法定假日
-     * @date Created in 21:03 2019/1/31
-     **/
-    public boolean isLawHoliday(String calendar) throws Exception {
-        CalendarUtils.isValidDate(calendar);
-        if (lawHolidays.contains(calendar)) {
-            return true;
+     * 从网站上获取假期日期 连休不准
+     * @param context
+     */
+    public static void getHolidayByInternet(Context context) {
+        if (isHaveCache(context)) {
+            return;
         }
-        return false;
-    }
-
-    /**
-     * @author qyw
-     * @description 判断是否是周末
-     * @date Created in 21:03 2019/1/31
-     **/
-    public boolean isWeekends(String calendar) throws Exception {
-        CalendarUtils.isValidDate(calendar);
-        // 先将字符串类型的日期转换为Calendar类型
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = sdf.parse(calendar);
-        Calendar ca = Calendar.getInstance();
-        ca.setTime(date);
-        if (ca.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
-                || ca.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @author qyw
-     * @description 判断是否是需要额外补班的周末
-     * @date Created in 21:06 2019/1/31
-     **/
-    public boolean isExtraWorkday(String calendar) throws Exception {
-        CalendarUtils.isValidDate(calendar);
-        if (extraWorkdays.contains(calendar)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @author qyw
-     * @description 判断是否是休息日（包含法定节假日和不需要补班的周末）
-     * @date Created in 21:06 2019/1/31
-     **/
-    public boolean isHoliday(String calendar) throws Exception {
-        CalendarUtils.isValidDate(calendar);
-        // 首先法定节假日必定是休息日
-        if (this.isLawHoliday(calendar)) {
-            return true;
-        }
-        // 排除法定节假日外的非周末必定是工作日
-        if (!this.isWeekends(calendar)) {
-            return false;
-        }
-        // 所有周末中只有非补班的才是休息日
-        if (this.isExtraWorkday(calendar)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @author qyw
-     * @description 校验字符串是否为指定的日期格式, 含逻辑严格校验, 2007/02/30返回false
-     * @date Created in 21:06 2019/1/31
-     **/
-    private static boolean isValidDate(String str) {
-        boolean convertSuccess = true;
-        // 指定日期格式为四位年/两位月份/两位日期，注意yyyy-MM-dd区分大小写；
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuffer stringBuffer = new StringBuffer();
         try {
-            // 设置lenient为false.
-            // 否则SimpleDateFormat会比较宽松地验证日期，比如2007/02/29会被接受，并转换成2007/03/01
-            format.setLenient(false);
-            format.parse(str);
-        } catch (ParseException e) {
-            convertSuccess = false;
+//            URL url = new URL(AppConstants.HOLIDAY_API + TimeUtils.parse(TimeUtils.FORMAT_YY));
+//            URLConnection URLconnection = url.openConnection();
+//            HttpURLConnection httpConnection = (HttpURLConnection) URLconnection;
+//            int responseCode = httpConnection.getResponseCode();
+//            if (responseCode == HttpURLConnection.HTTP_OK) {
+//                InputStream in = httpConnection.getInputStream();
+//                InputStreamReader isr = new InputStreamReader(in);
+//                BufferedReader bufr = new BufferedReader(isr);
+//                String str;
+//                while ((str = bufr.readLine()) != null) {
+//                    stringBuffer.append(str.toString());
+//                }
+//                bufr.close();
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return convertSuccess;
+        parseJsonHoliday(context, stringBuffer.toString());
     }
 
+    /**
+     * 解析网站json数据
+     * @param context
+     * @param json
+     */
+    private static void parseJsonHoliday(Context context, String json) {
+        Gson gson = new Gson();
+        ResultCode resultCode = gson.fromJson(json, ResultCode.class);
+        StringBuffer stringBuffer = new StringBuffer();
+        if (resultCode != null) {
+            if (resultCode.getCode() == 1) {
+                List<JsonMonth> jsonMonths = resultCode.getData();
+                for (JsonMonth jsonMonth : jsonMonths) {
+                    List<Holiday> holidays = jsonMonth.getDays();
+                    for (Holiday holiday : holidays) {
+                        stringBuffer.append(holiday.toString());
+                    }
+                }
+            }
+        }
 
-    public static void main(String[] args) throws Exception {
-        String calendar = "2018-01-32";
-        CalendarUtils cc = new CalendarUtils();
-        System.out.println("输入的calendar是否是指定要求的格式:" + CalendarUtils.isValidDate(calendar));
-        System.out.println("是否是法定节假日：" + cc.isLawHoliday(calendar));
-        System.out.println("是否是周末：" + cc.isWeekends(calendar));
-        System.out.println("是否是需要额外补班的周末：" + cc.isExtraWorkday(calendar));
-        System.out.println("是否是休息日：" + cc.isHoliday(calendar));
+        String holidayByFile = getHolidayByFile(context);
+        if (holidayByFile.equals(stringBuffer.toString())) {
+            saveHoliday(context, stringBuffer.toString());
+        } else {
+            saveHoliday(context, holidayByFile);
+        }
     }
 
+    /**
+     * 获取本地holiday信息， 根据网站返回信息修改
+     * @param context
+     */
+    public static String getHolidayByFile(Context context) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            AssetManager assetManager = context.getAssets();
+            InputStream is = assetManager.open(TimeUtils.parse(TimeUtils.FORMAT_YY) + ".txt");
+            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+            BufferedReader bf = new BufferedReader(isr);
+            String line;
+            while ((line = bf.readLine()) != null) {
+                stringBuilder.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 保存网站信息
+     * @param context
+     * @param s
+     */
+    public static void saveHoliday(Context context, String s) {
+        FileOutputStream out = null;
+        BufferedWriter writer = null;
+        try {
+            out = context.openFileOutput(TimeUtils.parse(TimeUtils.FORMAT_YY) + ".txt", Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            writer.write(s);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 加载holiday信息
+     * @param context
+     * @return
+     */
+    public static List<Holiday> loadHoliday(Context context) {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        List<Holiday> holidays = new ArrayList<>();
+        try {
+            //设置将要打开的存储文件名称
+            in = context.openFileInput(TimeUtils.parse(TimeUtils.FORMAT_YY) + ".txt");
+            //FileInputStream -> InputStreamReader ->BufferedReader
+            reader = new BufferedReader(new InputStreamReader(in));
+            String line = new String();
+            //读取每一行数据，并追加到StringBuilder对象中，直到结束
+            while ((line = reader.readLine()) != null) {
+                content.append(line);
+                String[] holiday = line.split(":");
+                if (holiday.length < 2) {
+                    continue;
+                }
+                holidays.add(new Holiday(holiday[0], Integer.valueOf(holiday[1])));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return holidays;
+    }
+
+    /**
+     * 判断是否已经有了缓存
+     * @param context
+     * @return
+     */
+    private static boolean isHaveCache(Context context) {
+        try {
+            FileInputStream in = context.openFileInput(TimeUtils.parse(TimeUtils.FORMAT_YY) + ".txt");
+            if (in != null) {
+                return true;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
