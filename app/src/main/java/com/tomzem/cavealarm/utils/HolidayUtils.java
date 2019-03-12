@@ -54,6 +54,30 @@ public class HolidayUtils {
     }
 
     /**
+     *  获取下一个工作日或者节假日
+     * @param type 0 工作日   1 节假日
+     * @return 2019-12-12
+     */
+    public String nextTypeDay(int type) {
+        String day = TimeUtils.parse(TimeUtils.FORMAT_YMD);
+        boolean isBeforeDay = true;
+        for (Holiday holiday : mHolidayList) {
+            if (isBeforeDay && !holiday.getDate().equals(day)) {
+                continue;
+            }
+            if (holiday.getDate().equals(day)) {
+                isBeforeDay = false;
+                continue;
+            }
+            if (holiday.getType() == type) {
+                day = holiday.getDate();
+                break;
+            }
+        }
+        return day;
+    }
+
+    /**
      * 从网站上获取假期日期 连休不准
      * @param context
      */

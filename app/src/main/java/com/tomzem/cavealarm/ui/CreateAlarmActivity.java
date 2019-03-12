@@ -19,6 +19,7 @@ import com.tomzem.cavealarm.R;
 import com.tomzem.cavealarm.bean.Alarm;
 import com.tomzem.cavealarm.eventbus.RefreshAlarmListEvent;
 import com.tomzem.cavealarm.helper.AlarmHelper;
+import com.tomzem.cavealarm.utils.HolidayUtils;
 import com.tomzem.cavealarm.utils.NextRingUtils;
 import com.tomzem.cavealarm.utils.TimeUtils;
 
@@ -62,6 +63,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     private List<MenuResult> mMenuResultSelf;
     private int[] currentHourMin;
     private int[] selectHourMin;
+    private HolidayUtils holidayUtils;
 
     @Override
     protected int getLayoutId() {
@@ -81,6 +83,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initData() {
         super.initData();
+        holidayUtils = new HolidayUtils(mContext);
         mTpSelectTime.setText(TimeUtils.getCurrentHourMin());
         mCurrentMenuResult = mRciRingCycle.getMenuResult();
     }
@@ -261,9 +264,24 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     ringPoor = nextRingUtils.ringInTodayOrNextDay();
                     break;
                 case MENU_ALARM_WORK_DAY:
+                    if (!holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
+                            && nextRingUtils.isRingInToday() > 0) {
+                        // 判断今日是否是工作日 且 是否在今日响铃
+                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                    } else {
+                        // 在下一个工作日响铃
+                        ringPoor = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
+                    }
                     break;
                 case MENU_ALARM_HOLIDAY:
-
+                    if (holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
+                            && nextRingUtils.isRingInToday() > 0) {
+                        // 判断今日是否是节假日 且 是否在今日响铃
+                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                    } else {
+                        // 在下一个节假日响铃
+                        ringPoor = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(1));
+                    }
                     break;
                 case MENU_ALARM_WEEK:
                     // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
