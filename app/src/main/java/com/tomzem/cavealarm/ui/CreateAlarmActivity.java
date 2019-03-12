@@ -249,7 +249,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
      * 计算多久后响铃时间
      */
     private void calculateNextRing() {
-        long ringPoor = TimeUtils.getCurrentTime();
+        long ringTime = TimeUtils.getCurrentTime();
         currentHourMin = TimeUtils.getHourMinByDate(new Date());
         String[] selectHourMinStr = mTpSelectTime.getText().toString().split(":");
         selectHourMin = new int[selectHourMinStr.length];
@@ -261,46 +261,46 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
             switch (mRciRingCycle.getMenuResult().getId()) {
                 case MENU_ALARM_ONCE:
                 case MENU_ALARM_EVERYDAY:
-                    ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                    ringTime = nextRingUtils.ringInTodayOrNextDay();
                     break;
                 case MENU_ALARM_WORK_DAY:
                     if (!holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
                             && nextRingUtils.isRingInToday() > 0) {
                         // 判断今日是否是工作日 且 是否在今日响铃
-                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                        ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
                         // 在下一个工作日响铃
-                        ringPoor = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
+                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
                     }
                     break;
                 case MENU_ALARM_HOLIDAY:
                     if (holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
                             && nextRingUtils.isRingInToday() > 0) {
                         // 判断今日是否是节假日 且 是否在今日响铃
-                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                        ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
                         // 在下一个节假日响铃
-                        ringPoor = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(1));
+                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(1));
                     }
                     break;
                 case MENU_ALARM_WEEK:
                     // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
                     if (TimeUtils.isMonToThurs()) {
-                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                        ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else if (getResources().getString(R.string.text_Friday).equals(TimeUtils.getTodayInWeek())) {
                         // 周五 判断当天是否响铃
                         if (nextRingUtils.isRingInToday() > 0) {
                             //响
-                            ringPoor = nextRingUtils.ringInTodayOrNextDay();
+                            ringTime = nextRingUtils.ringInTodayOrNextDay();
                         } else {
                             //不响  下周一响
-                            ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
+                            ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                         }
                     } else if (getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {
                         // 周日 让他在第二天 选择的时间响
-                        ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextDay());
+                        ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextDay());
                     } else {
-                        ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
+                        ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                     }
                     break;
                 case MENU_ALARM_SELF:
@@ -308,7 +308,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                 case MENU_ALARM_CEASE:
                     break;
             }
-            setRingPoorText(ringPoor);
+            setRingPoorText(ringTime);
         }
     }
 
