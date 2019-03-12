@@ -26,9 +26,32 @@ import java.util.List;
 /**
  * @author Tomze
  * @time 2019年03月03日 22:27
- * @desc
+ * @desc 获取节假日工具类
  */
-public class CalendarUtils {
+public class HolidayUtils {
+
+    private List<Holiday> mHolidayList;
+
+    public HolidayUtils(Context context) {
+        mHolidayList = loadHoliday(context);
+    }
+
+    /**
+     *  判断日期是否为节假日
+     * @param date
+     * @return
+     */
+    public boolean isHoliday(String date) {
+        if (mHolidayList == null) {
+            return false;
+        }
+        for (Holiday holiday : mHolidayList) {
+            if (date.equals(holiday.getDate())) {
+                return holiday.getType() != 0;
+            }
+        }
+        return false;
+    }
 
     /**
      * 从网站上获取假期日期 连休不准
@@ -155,7 +178,7 @@ public class CalendarUtils {
             in = context.openFileInput(TimeUtils.parse(TimeUtils.FORMAT_YY) + ".txt");
             //FileInputStream -> InputStreamReader ->BufferedReader
             reader = new BufferedReader(new InputStreamReader(in));
-            String line = new String();
+            String line;
             //读取每一行数据，并追加到StringBuilder对象中，直到结束
             while ((line = reader.readLine()) != null) {
                 content.append(line);
