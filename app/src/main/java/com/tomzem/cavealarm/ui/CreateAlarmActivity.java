@@ -19,6 +19,7 @@ import com.tomzem.cavealarm.R;
 import com.tomzem.cavealarm.bean.Alarm;
 import com.tomzem.cavealarm.eventbus.RefreshAlarmListEvent;
 import com.tomzem.cavealarm.helper.AlarmHelper;
+import com.tomzem.cavealarm.utils.NextRingUtils;
 import com.tomzem.cavealarm.utils.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -245,42 +246,43 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
      * 计算多久后响铃时间
      */
     private void calculateNextRing() {
-
+        long ringPoor = TimeUtils.getCurrentTime();
         currentHourMin = TimeUtils.getHourMinByDate(new Date());
         String[] selectHourMinStr = mTpSelectTime.getText().toString().split(":");
         selectHourMin = new int[selectHourMinStr.length];
         for (int i = 0; i < selectHourMin.length; i++) {
             selectHourMin[i] = Integer.parseInt(selectHourMinStr[i]);
         }
-
         if (selectHourMin.length == 2 && currentHourMin.length == 2) {
+            NextRingUtils nextRingUtils = NextRingUtils.getNextRingUtils(currentHourMin, selectHourMin);
             switch (mRciRingCycle.getMenuResult().getId()) {
                 case MENU_ALARM_ONCE:
                 case MENU_ALARM_EVERYDAY:
-                    ringInTodayOrNextDay();
+                    ringPoor = nextRingUtils.ringInTodayOrNextDay();
                     break;
                 case MENU_ALARM_WORK_DAY:
                     break;
                 case MENU_ALARM_HOLIDAY:
+
                     break;
                 case MENU_ALARM_WEEK:
                     // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
                     if (TimeUtils.isMonToThurs()) {
-                        ringInTodayOrNextDay();
+                        ringPoor = nextRingUtils.ringInTodayOrNextDay();
                     } else if (getResources().getString(R.string.text_Friday).equals(TimeUtils.getTodayInWeek())) {
                         // 周五 判断当天是否响铃
-                        if (isRingInToday() > 0) {
+                        if (nextRingUtils.isRingInToday() > 0) {
                             //响
-                            ringInTodayOrNextDay();
+                            ringPoor = nextRingUtils.ringInTodayOrNextDay();
                         } else {
                             //不响  下周一响
-                            setRingPoorText(getAssignDayRingTime(TimeUtils.getNextMonday(new Date())));
+                            ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                         }
                     } else if (getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {
                         // 周日 让他在第二天 选择的时间响
-                        setRingPoorText(getAssignDayRingTime(TimeUtils.getNextDay()));
+                        ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextDay());
                     } else {
-                        setRingPoorText(getAssignDayRingTime(TimeUtils.getNextMonday(new Date())));
+                        ringPoor = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                     }
                     break;
                 case MENU_ALARM_SELF:
@@ -288,45 +290,8 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                 case MENU_ALARM_CEASE:
                     break;
             }
-
+            setRingPoorText(ringPoor);
         }
-    }
-
-    /**
-     * 按照周期 当天或第二天必响铃 计算方式
-     */
-    private void ringInTodayOrNextDay() {
-        long currentTime = TimeUtils.getCurrentTime();
-        long ringTime;
-        int poor = isRingInToday();
-        if (poor <= 0) {
-            //选择的时间已经过了 获取第二天的这个时候的时间戳
-            ringTime = getAssignDayRingTime(TimeUtils.getNextDay());
-        } else {
-            ringTime = currentTime + poor * 1000 * 60;
-        }
-        setRingPoorText(ringTime);
-    }
-
-    /**
-     * 判断当天是否需要响铃
-     *
-     * @return 大于0 响  小于等于 不会响
-     */
-    private int isRingInToday() {
-        return selectHourMin[0] * 60 - currentHourMin[0] * 60
-                + selectHourMin[1] - currentHourMin[1];
-    }
-
-    /**
-     * 获取在指定日期响铃时间的时间戳
-     *
-     * @return
-     */
-    private long getAssignDayRingTime(String assignDay) {
-        StringBuffer time = new StringBuffer();
-        time.append(assignDay).append(" " + mTpSelectTime.getText().toString());
-        return TimeUtils.dateToStamp(time.toString());
     }
 
     /**
@@ -334,10 +299,11 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
      *
      * @param ringTime
      */
-    private void setRingPoorText(long ringTime) {
+    public void setRingPoorText(long ringTime) {
         StringBuffer text = new StringBuffer();
         text.append(TimeUtils.getDatePoor(ringTime, TimeUtils.getCurrentTime()))
                 .append(getResources().getString(R.string.text_next_ring));
         mTvNextRing.setText(text.toString());
     }
+
 }
