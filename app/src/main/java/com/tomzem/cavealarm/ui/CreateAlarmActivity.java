@@ -158,6 +158,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     mMenuResult.get(MENU_ALARM_SELF).setMenuResultSelf(mMenuResultSelf);
                 }
                 mRciRingCycle.setMenuResult(mMenuResult);
+                calculateNextRing();
                 dialog.dismiss();
             }
         });
@@ -249,7 +250,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
      * 计算多久后响铃时间
      */
     private void calculateNextRing() {
-        long ringTime = TimeUtils.getCurrentTime();
+        long ringTime = 0;
         currentHourMin = TimeUtils.getHourMinByDate(new Date());
         String[] selectHourMinStr = mTpSelectTime.getText().toString().split(":");
         selectHourMin = new int[selectHourMinStr.length];
@@ -265,7 +266,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     break;
                 case MENU_ALARM_WORK_DAY:
                     if (!holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
-                            && nextRingUtils.isRingInToday() > 0) {
+                            && nextRingUtils.isRingToday()) {
                         // 判断今日是否是工作日 且 是否在今日响铃
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
@@ -275,7 +276,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     break;
                 case MENU_ALARM_HOLIDAY:
                     if (holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
-                            && nextRingUtils.isRingInToday() > 0) {
+                            && nextRingUtils.isRingToday()) {
                         // 判断今日是否是节假日 且 是否在今日响铃
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
@@ -289,7 +290,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else if (getResources().getString(R.string.text_Friday).equals(TimeUtils.getTodayInWeek())) {
                         // 周五 判断当天是否响铃
-                        if (nextRingUtils.isRingInToday() > 0) {
+                        if (nextRingUtils.isRingToday()) {
                             //响
                             ringTime = nextRingUtils.ringInTodayOrNextDay();
                         } else {
@@ -304,11 +305,34 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     }
                     break;
                 case MENU_ALARM_SELF:
+                    MenuResult firstResult = null;
+                    for (MenuResult menuResult : mMenuResultSelf) {
+                        // 将一周中第一个选中的保存
+                        if (firstResult == null && menuResult.isChoose()) {
+                            firstResult = menuResult;
+                        }
+                        if (!TimeUtils.getTodayInWeek().equals(menuResult.getResult())) {
+                            continue;
+                        }
+                        if (nextRingUtils.isRingToday()) {
+                            ringTime = nextRingUtils.ringInTodayOrNextDay();
+                            break;
+                        } else {
+                            if (menuResult.isChoose()) {
+                                ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextWeek(menuResult.getResult()));
+                                continue;
+                            }
+                        }
+                    }
+                    // 如果在下次响铃在当天之前
+                    if (ringTime == 0) {
+                        ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextWeek(firstResult.getResult()));
+                    }
                     break;
                 case MENU_ALARM_CEASE:
                     break;
             }
-            setRingPoorText(ringTime);
+            setRingPoorText(ringTime != 0? ringTime:TimeUtils.getCurrentTime());
         }
     }
 

@@ -209,7 +209,19 @@ public class TimeUtils {
      * @return
      */
     public static String getTodayInWeek() {
-        Date date = new Date();
+        return parseDate2Week(new Date());
+    }
+
+    public static String parseDate2Week(Calendar calendar) {
+        return parseDate2Week(calendar.getTime());
+    }
+
+    /**
+     * 将日期格式化成星期
+     * @param date
+     * @return
+     */
+    public static String parseDate2Week(Date date) {
         SimpleDateFormat dateFm = new SimpleDateFormat(FORMAT_EE);
         return dateFm.format(date);
     }
@@ -233,6 +245,19 @@ public class TimeUtils {
 
         // 增加到入参日期的下周一
         cd.add(Calendar.DAY_OF_MONTH, nextMondayOffset);
+        return parse(cd.getTime(), FORMAT_YMD);
+    }
+
+    /**
+     *  获取下周周几的日期
+     * @param week
+     * @return
+     */
+    public static String getNextWeek(String week) {
+        Calendar cd = Calendar.getInstance();
+        do {
+            cd.add(Calendar.DAY_OF_WEEK, 1);
+        } while (!week.equals(parseDate2Week(cd)));
         return parse(cd.getTime(), FORMAT_YMD);
     }
 }

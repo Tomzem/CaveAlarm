@@ -41,9 +41,13 @@ public class NextRingUtils {
      *
      * @return 大于0 响  小于等于 不会响
      */
-    public int isRingInToday() {
+    private int isRingInToday() {
         return selectHourMin[0] * 60 - currentHourMin[0] * 60
                 + selectHourMin[1] - currentHourMin[1];
+    }
+
+    public boolean isRingToday() {
+        return isRingInToday() > 0;
     }
 
     /**
