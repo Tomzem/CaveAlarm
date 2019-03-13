@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,7 +24,7 @@ import java.util.List;
  * @time 2019年03月03日 11:48
  * @desc
  */
-public class RingConfigItem extends RelativeLayout{
+public class RingConfigItem extends RelativeLayout {
 
     private TextView mTvMenuName;
     private TextView mTvMenuResult;
@@ -66,9 +65,9 @@ public class RingConfigItem extends RelativeLayout{
             mMenuName = ta.getString(R.styleable.RingConfigItem_rightText);
             mMenuHint = ta.getString(R.styleable.RingConfigItem_rightHint);
             mStrResults = getResources().getStringArray(ta.getResourceId(R.styleable.RingConfigItem_rightResult, 0));
-        } catch (Resources.NotFoundException e){
+        } catch (Resources.NotFoundException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             ta.recycle();
         }
         initData();
@@ -97,11 +96,11 @@ public class RingConfigItem extends RelativeLayout{
     }
 
     public void setMenuName(String name) {
-        mTvMenuName.setText(name != null? name : "");
+        mTvMenuName.setText(name != null ? name : "");
     }
 
     public void setMenuHint(String hint) {
-        mEtMenuNote.setHint(hint != null? hint : "");
+        mEtMenuNote.setHint(hint != null ? hint : "");
     }
 
     public String getMenuNote() {
@@ -109,7 +108,7 @@ public class RingConfigItem extends RelativeLayout{
     }
 
     public MenuResult getMenuResult() {
-        return rightResult != null? rightResult : new MenuResult(0,"",0, 0);
+        return rightResult != null ? rightResult : new MenuResult(0, "", 0, 0);
     }
 
     public String getMenuResultString() {
@@ -122,12 +121,15 @@ public class RingConfigItem extends RelativeLayout{
 
     public void setMenuResult(List<MenuResult> menuResult) {
         StringBuffer result = new StringBuffer();
-        if (menuResult != null && menuResult.size() > 5) {
+        if (menuResult == null) {
+            return;
+        }
+        if (menuResult.size() > 5) {
             // 判断是否有自定义日期
             List<MenuResult> menuResultSelf = menuResult.get(5).getMenuResultSelf();
             if (menuResultSelf != null && menuResultSelf.size() > 0) {
                 for (MenuResult menu : menuResultSelf) {
-                    if (menu.isChoose()){
+                    if (menu.isChoose()) {
                         result.append(menu.getResult().trim()).append(",");
                     }
                 }
@@ -135,13 +137,13 @@ public class RingConfigItem extends RelativeLayout{
                 mTvMenuResult.setText(result.toString().substring(0, result.length() - 1));
                 return;
             }
-            // 正常逻辑
-            for (MenuResult menu : menuResult) {
-                if (menu.isChoose()){
-                    result.append(menu.getResult().trim());
-                    rightResult = menu;
-                    break;
-                }
+        }
+        // 正常逻辑
+        for (MenuResult menu : menuResult) {
+            if (menu.isChoose()) {
+                result.append(menu.getResult().trim());
+                rightResult = menu;
+                break;
             }
         }
         mTvMenuResult.setText(result.toString());
@@ -149,7 +151,6 @@ public class RingConfigItem extends RelativeLayout{
 
     /**
      * 设置菜单显示类型
-     *
      */
     public void setRightType(@RightType int type) {
         switch (type) {
