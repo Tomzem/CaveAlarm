@@ -31,7 +31,10 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE;
+import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_10;
+import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_7;
+import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_8;
+import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_9;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_EVERYDAY;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_HOLIDAY;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_ONCE;
@@ -264,7 +267,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                 case MENU_ALARM_EVERYDAY:
                     ringTime = nextRingUtils.ringInTodayOrNextDay();
                     break;
+                case MENU_ALARM_CEASE_8:
+                case MENU_ALARM_CEASE_10:
                 case MENU_ALARM_WORK_DAY:
+                    // 工作日+下周六 工作日+下周日 工作日
                     if (!holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
                             && nextRingUtils.isRingToday()) {
                         // 判断今日是否是工作日 且 是否在今日响铃
@@ -288,21 +294,16 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     // 判断今天是周几 周一到周四直接调用 ringInTodayOrNextDay
                     if (TimeUtils.isMonToThurs()) {
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
+                        break;
                     } else if (getResources().getString(R.string.text_Friday).equals(TimeUtils.getTodayInWeek())) {
                         // 周五 判断当天是否响铃
                         if (nextRingUtils.isRingToday()) {
-                            //响
                             ringTime = nextRingUtils.ringInTodayOrNextDay();
-                        } else {
-                            //不响  下周一响
-                            ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
+                            break;
                         }
-                    } else if (getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {
-                        // 周日 让他在第二天 选择的时间响
-                        ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextDay());
-                    } else {
-                        ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                     }
+                    //周五不响 周六 周天  下周一响
+                    ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextMonday(new Date()));
                     break;
                 case MENU_ALARM_SELF:
                     MenuResult firstResult = null;
@@ -329,7 +330,37 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextWeek(firstResult.getResult()));
                     }
                     break;
-                case MENU_ALARM_CEASE:
+                case MENU_ALARM_CEASE_7:
+                case MENU_ALARM_CEASE_9:
+                    if (!holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
+                            && (nextRingUtils.isRingToday() || !holidayUtils.isHoliday(TimeUtils.getNextDay()))) {
+                        // 判断 今日是工作日 且 (在今日响铃 或者 明天是一个工作日)
+                        ringTime = nextRingUtils.ringInTodayOrNextDay();
+                        break;
+                    }
+                    // 今天不是工作日  type =1||2
+                    if (!(holidayUtils.getDayType(TimeUtils.parse(TimeUtils.FORMAT_YMD)) == 2)) {
+                        // 不是法定节假日
+                        if (mRciRingCycle.getMenuResult().getId() == MENU_ALARM_CEASE_9
+                                && getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {
+                            // 选择本周星期天  且 今天是星期天
+                            if (nextRingUtils.isRingToday() || !holidayUtils.isHoliday(TimeUtils.getNextDay())) {
+                                // 今天响铃  或者明天是工作日
+                                ringTime = nextRingUtils.ringInTodayOrNextDay();
+                                break;
+                            }
+                        }
+                        if (mRciRingCycle.getMenuResult().getId() == MENU_ALARM_CEASE_7
+                                && getResources().getString(R.string.text_Saturday).equals(TimeUtils.getTodayInWeek())) {
+                            // 选择本周星期6  且 今天是星期6
+                            if (nextRingUtils.isRingToday()) {
+                                ringTime = nextRingUtils.ringInTodayOrNextDay();
+                                break;
+                            }
+                        }
+                    }
+                    // 如果今天是法定节假日  在下一个工作日响铃
+                    ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
                     break;
             }
             setRingPoorText(ringTime != 0? ringTime:TimeUtils.getCurrentTime());

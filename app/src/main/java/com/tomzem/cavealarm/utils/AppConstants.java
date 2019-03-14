@@ -46,7 +46,10 @@ public class AppConstants {
     public static final int MENU_ALARM_HOLIDAY = 3;
     public static final int MENU_ALARM_WEEK = 4;
     public static final int MENU_ALARM_SELF = 5;
-    public static final int MENU_ALARM_CEASE = 6;
+    public static final int MENU_ALARM_CEASE_7 = 7;
+    public static final int MENU_ALARM_CEASE_8 = 8;
+    public static final int MENU_ALARM_CEASE_9 = 9;
+    public static final int MENU_ALARM_CEASE_10 =10;
 
     // 获取万年历信息 + 年份 eg:2019.txt
     public static final String HOLIDAY_API = "http://www.mxnzp.com/api/holiday/list/year/";
