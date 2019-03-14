@@ -31,6 +31,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.tomzem.cavealarm.utils.AppConstants.DAY_HOLIDAY_TYPE;
+import static com.tomzem.cavealarm.utils.AppConstants.DAY_SXIU_TYPE;
+import static com.tomzem.cavealarm.utils.AppConstants.DAY_WORK_TYPE;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_10;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_7;
 import static com.tomzem.cavealarm.utils.AppConstants.MENU_ALARM_CEASE_8;
@@ -277,7 +280,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
                         // 在下一个工作日响铃
-                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
+                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(DAY_WORK_TYPE));
                     }
                     break;
                 case MENU_ALARM_HOLIDAY:
@@ -287,7 +290,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
                         // 在下一个节假日响铃
-                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(1));
+                        ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(DAY_SXIU_TYPE));
                     }
                     break;
                 case MENU_ALARM_WEEK:
@@ -339,7 +342,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         break;
                     }
                     // 今天不是工作日  type =1||2
-                    if (!(holidayUtils.getDayType(TimeUtils.parse(TimeUtils.FORMAT_YMD)) == 2)) {
+                    if (!(holidayUtils.getDayType(TimeUtils.parse(TimeUtils.FORMAT_YMD)) == DAY_HOLIDAY_TYPE)) {
                         // 不是法定节假日
                         if (mRciRingCycle.getMenuResult().getId() == MENU_ALARM_CEASE_9
                                 && getResources().getString(R.string.text_Sunday).equals(TimeUtils.getTodayInWeek())) {

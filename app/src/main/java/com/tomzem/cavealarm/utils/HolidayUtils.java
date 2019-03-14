@@ -23,6 +23,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tomzem.cavealarm.utils.AppConstants.DAY_WORK_TYPE;
+
 /**
  * @author Tomze
  * @time 2019年03月03日 22:27
@@ -52,7 +54,7 @@ public class HolidayUtils {
         }
         for (Holiday holiday : mHolidayList) {
             if (date.equals(holiday.getDate())) {
-                return holiday.getType() != 0;
+                return holiday.getType() != DAY_WORK_TYPE;
             }
         }
         return false;
@@ -65,14 +67,14 @@ public class HolidayUtils {
      */
     public int getDayType(String date) {
         if (mHolidayList == null) {
-            return 1;
+            return DAY_WORK_TYPE;
         }
         for (Holiday holiday : mHolidayList) {
             if (date.equals(holiday.getDate())) {
                 return holiday.getType();
             }
         }
-        return 1;
+        return DAY_WORK_TYPE;
     }
 
     /**

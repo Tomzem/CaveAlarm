@@ -51,6 +51,11 @@ public class AppConstants {
     public static final int MENU_ALARM_CEASE_9 = 9;
     public static final int MENU_ALARM_CEASE_10 =10;
 
+    // 日期类型  工作日  双休日  节假日
+    public static final int DAY_WORK_TYPE = 0;
+    public static final int DAY_SXIU_TYPE = 1;
+    public static final int DAY_HOLIDAY_TYPE = 2;
+
     // 获取万年历信息 + 年份 eg:2019.txt
     public static final String HOLIDAY_API = "http://www.mxnzp.com/api/holiday/list/year/";
 }
