@@ -59,6 +59,23 @@ public class HolidayUtils {
     }
 
     /**
+     * 获取某天的类型
+     * @param date
+     * @return 默认工作日
+     */
+    public int getDayType(String date) {
+        if (mHolidayList == null) {
+            return 1;
+        }
+        for (Holiday holiday : mHolidayList) {
+            if (date.equals(holiday.getDate())) {
+                return holiday.getType();
+            }
+        }
+        return 1;
+    }
+
+    /**
      * 获取下一个工作日或者休假日
      *
      * @param type 0 工作日   1 双休日  2节假日
