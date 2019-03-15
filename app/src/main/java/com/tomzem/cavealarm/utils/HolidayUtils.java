@@ -80,7 +80,7 @@ public class HolidayUtils {
     /**
      * 获取下一个工作日或者休假日
      *
-     * @param type 0 工作日   1 双休日  2节假日
+     * @param type 0 工作日   1 双休日  2节假日 3假日
      * @return 2019-12-12
      */
     public String nextTypeDay(int type) {
@@ -94,7 +94,7 @@ public class HolidayUtils {
                 isBeforeDay = false;
                 continue;
             }
-            if (holiday.getType() == type || (type +1) == holiday.getType()) {
+            if (holiday.getType() == type || (type == 3 && holiday.getType() != 0)) {
                 day = holiday.getDate();
                 break;
             }

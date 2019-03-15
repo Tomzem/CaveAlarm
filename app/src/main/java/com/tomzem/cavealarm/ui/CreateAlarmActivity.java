@@ -310,22 +310,24 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                     break;
                 case MENU_ALARM_SELF:
                     MenuResult firstResult = null;
+                    boolean isOverToday = false;
                     for (MenuResult menuResult : mMenuResultSelf) {
                         // 将一周中第一个选中的保存
                         if (firstResult == null && menuResult.isChoose()) {
                             firstResult = menuResult;
                         }
+                        if (menuResult.isChoose() && isOverToday) {
+                            ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextWeek(menuResult.getResult()));
+                            continue;
+                        }
                         if (!TimeUtils.getTodayInWeek().equals(menuResult.getResult())) {
                             continue;
                         }
+                        isOverToday = true;
                         if (nextRingUtils.isRingToday()) {
+                            // 在今天响铃
                             ringTime = nextRingUtils.ringInTodayOrNextDay();
                             break;
-                        } else {
-                            if (menuResult.isChoose()) {
-                                ringTime = nextRingUtils.getAssignDayRingTime(TimeUtils.getNextWeek(menuResult.getResult()));
-                                continue;
-                            }
                         }
                     }
                     // 如果在下次响铃在当天之前
@@ -341,7 +343,7 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                         break;
                     }
-                    // 今天不是工作日  type =1||2
+                    // type =1||2
                     if (!(holidayUtils.getDayType(TimeUtils.parse(TimeUtils.FORMAT_YMD)) == DAY_HOLIDAY_TYPE)) {
                         // 不是法定节假日
                         if (mRciRingCycle.getMenuResult().getId() == MENU_ALARM_CEASE_9
