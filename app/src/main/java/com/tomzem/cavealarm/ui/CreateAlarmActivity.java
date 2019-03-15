@@ -286,10 +286,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                 case MENU_ALARM_HOLIDAY:
                     if (holidayUtils.isHoliday(TimeUtils.parse(TimeUtils.FORMAT_YMD))
                             && nextRingUtils.isRingToday()) {
-                        // 判断今日是否是节假日 且 是否在今日响铃
+                        // 判断今日是否是双休日 且 是否在今日响铃
                         ringTime = nextRingUtils.ringInTodayOrNextDay();
                     } else {
-                        // 在下一个节假日响铃
+                        // 在下一个双休日响铃
                         ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(DAY_SXIU_TYPE));
                     }
                     break;
@@ -363,10 +363,10 @@ public class CreateAlarmActivity extends BaseActivity implements View.OnClickLis
                         }
                     }
                     // 如果今天是法定节假日  在下一个工作日响铃
-                    ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(0));
+                    ringTime = nextRingUtils.getAssignDayRingTime(holidayUtils.nextTypeDay(DAY_WORK_TYPE));
                     break;
             }
-            setRingPoorText(ringTime != 0? ringTime:TimeUtils.getCurrentTime());
+            setRingPoorText(ringTime != 0 ? ringTime : TimeUtils.getCurrentTime());
         }
     }
 
