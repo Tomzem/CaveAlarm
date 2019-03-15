@@ -8,8 +8,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
-    <!-- end  权限申请区 -->
+    <!-- end  权限申请区 --> v
     <application
         android:name=".adapter.AlarmApplication"
         android:allowBackup="true"
@@ -18,14 +19,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CreateAlarmActivity"></activity>
+        <activity android:name=".ui.CreateAlarmActivity"
+            android:screenOrientation="portrait"/>
+
+        <service android:name=".service.ForegroundService"/>
     </application>
 
 </manifest>
