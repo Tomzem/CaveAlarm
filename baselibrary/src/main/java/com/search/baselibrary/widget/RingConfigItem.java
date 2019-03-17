@@ -27,7 +27,7 @@ import java.util.List;
 public class RingConfigItem extends RelativeLayout {
 
     private TextView mTvMenuName;
-    private TextView mTvMenuResult;
+    private AutoFitTextView mTvMenuResult;
     private ImageView mImgMenuRight;
     private EditText mEtMenuNote;
 
